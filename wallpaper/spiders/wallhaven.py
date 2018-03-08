@@ -1,15 +1,24 @@
 # coding: utf-8
 # wallhaven.py
 
+import sys
+
 import os
+import json
 import time
 
 import scrapy
 from scrapy import Request
 
+__parent_dir__ = os.path.split(os.path.realpath(__file__))[0] + '/../'
+
+sys.path.append(__parent_dir__)
+import settings
+
+
 class WallHavenSpider(scrapy.Spider):
     name = 'wallhaven'
-    write_to_path = '/home/jsyqrt/Pictures/wallpaper/'
+    write_to_path = settings.WriteToPath
 
     def start_requests(self):
         urls = ['https://alpha.wallhaven.cc/random?page=' + str(i) for i in xrange(1, 10)]
@@ -18,7 +27,7 @@ class WallHavenSpider(scrapy.Spider):
 
     def parse(self, response):
         for img_url in response.xpath('//a[@class="preview" and starts-with(@href, "https://alpha.wallhaven.cc/wallpaper/")]/@href').extract():
-            print img_url
+        
             yield Request(
                 url = img_url,
                 meta = {
@@ -41,4 +50,4 @@ class WallHavenSpider(scrapy.Spider):
         img = response.body
         with open(os.path.join(self.write_to_path, response.url.split('/')[-1]), 'wb') as f:
            f.write(img)
-        print 'finished 1 wallpaper saving.'
+        
