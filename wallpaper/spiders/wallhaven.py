@@ -27,7 +27,7 @@ class WallHavenSpider(scrapy.Spider):
 
     def parse(self, response):
         for img_url in response.xpath('//a[@class="preview" and starts-with(@href, "https://alpha.wallhaven.cc/wallpaper/")]/@href').extract():
-        
+
             yield Request(
                 url = img_url,
                 meta = {
@@ -50,4 +50,4 @@ class WallHavenSpider(scrapy.Spider):
         img = response.body
         with open(os.path.join(self.write_to_path, response.url.split('/')[-1]), 'wb') as f:
            f.write(img)
-        
+

@@ -23,15 +23,15 @@ class ImgTripSpider(scrapy.Spider):
         base_url = 'https://www.imgtrip.com/api/image/page'
         for i in range(10):
             yield Request(url=base_url, callback=self.get_urls, dont_filter=True)
-    
+
     def get_urls(self, response):
         data = json.loads(response.body)
-        
+
         for d in data:
             yield Request(url=d['src'], meta={'name':d['name']}, callback=self.get_image)
-    
+
     def get_image(self, response):
         img = response.body
         with open(os.path.join(self.write_to_path, response.meta['name'].replace('/', '') + '.jpg'), 'wb') as f:
            f.write(img)
-        
+
