@@ -21,13 +21,12 @@ class WallHavenSpider(scrapy.Spider):
     write_to_path = settings.WriteToPath
 
     def start_requests(self):
-        urls = ['https://alpha.wallhaven.cc/random?page=' + str(i) for i in xrange(1, 10)]
+        urls = ['https://wallhaven.cc/random?seed=NYJVkS&page={}'.format(str(i)) for i in range(1, 10)]
         for url in urls:
             yield Request(url=url, callback=self.parse)
 
     def parse(self, response):
-        for img_url in response.xpath('//a[@class="preview" and starts-with(@href, "https://alpha.wallhaven.cc/wallpaper/")]/@href').extract():
-
+        for img_url in response.xpath('//a[@class="preview" and starts-with(@href, "https://wallhaven.cc/w/")]/@href').extract():
             yield Request(
                 url = img_url,
                 meta = {
@@ -37,9 +36,9 @@ class WallHavenSpider(scrapy.Spider):
             )
 
     def get_image(self, response):
-        img_real_url = response.xpath('//img[@id="wallpaper" and starts-with(@src, "//wallpapers.wallhaven.cc/wallpapers/full/wallhaven-")]/@src').extract_first()
+        img_real_url = response.xpath('//img[@id="wallpaper" and starts-with(@src, "https://w.wallhaven.cc/full/")]/@src').extract_first()
         yield Request(
-            url = 'https:' + img_real_url,
+            url = img_real_url,
             meta = {
 
             },

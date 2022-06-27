@@ -14,7 +14,7 @@ BOT_NAME = 'wallpaper'
 SPIDER_MODULES = ['wallpaper.spiders']
 NEWSPIDER_MODULE = 'wallpaper.spiders'
 
-WriteToPath = '/home/jsyqrt/Pictures/wallpaper/'
+WriteToPath = '/Users/liuqian/Pictures/wallpaper/'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
